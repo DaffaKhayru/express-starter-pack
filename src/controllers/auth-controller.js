@@ -2,7 +2,17 @@ import authService from "../services/auth-service.js";
 
 const signup = async (req,res,next) => {
     try{
-        const result = await authService.signup(req);
+        const result = await authService.signup(req.body);
+
+        res.status(200).json(result);
+    }catch(err) {
+        next();
+    }
+};
+
+const login = async (req,res,next) => {
+    try{
+        const result = await authService.login(req.body);
 
         res.status(200).json(result);
     }catch(err) {
@@ -11,5 +21,6 @@ const signup = async (req,res,next) => {
 };
 
 export default {
-    signup
+    signup,
+    login
 }

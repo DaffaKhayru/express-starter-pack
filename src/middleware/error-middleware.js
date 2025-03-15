@@ -1,4 +1,4 @@
-import { CustomError } from "../util/custom-error";
+import { CustomError } from "../util/custom-error.js";
 
 export const errorMiddleware = async (err,req,res,next) => {
     if(!err) {
@@ -13,6 +13,6 @@ export const errorMiddleware = async (err,req,res,next) => {
     }else {
         res.status(500).json({
             error: err,
-        }).end()
+        }).end();
     }
 }

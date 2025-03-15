@@ -1,17 +1,20 @@
-import { authValidation } from "../validations/auth-validation.js";
+import authValidation from "../validations/auth-validation.js";
 import { validate } from "../validations/validate.js";
 import {prismaClient} from '../config/database.js';
 import { CustomError } from "../util/custom-error.js";
+import jwt from 'jsonwebtoken';
 import bcrypt from 'bcrypt';
+import dotenv from 'dotenv';
+dotenv.config();
 
 const signup = async (reqBody) => {
     // validate user 
-    const userReq = validate(authValidation, reqBody);
+    const signupReq = validate(authValidation.signupValidation, reqBody);
 
     // find user inside database
     const findUser = await prismaClient.user.findFirst({
         where: {
-            email: userReq.email
+            email: signupReq.email
         }
     })
 
@@ -21,17 +24,54 @@ const signup = async (reqBody) => {
     }
 
     // hashing password
-    userReq.password = await bcrypt.hash(userReq.password, 10);
+    signupReq.password = await bcrypt.hash(signupReq.password, 10);
 
     // creating new user
-    const newUser = await prismaClient.user.create({
-        data: userReq
+    await prismaClient.user.create({
+        data: signupReq
     });
 
     // return value
-    return { newUser }
+    return { msg: "Signup success" }
 };
 
+const login = async (reqBody) => {
+    // validate user login
+    const loginReq = validate(authValidation.loginValidation, reqBody);
+
+    // find user in database
+    const findUser = await prismaClient.user.findFirst({
+        where: {
+            email: loginReq.email
+        } 
+    });
+
+    // check if user available or not
+    if(!findUser) {
+        throw new CustomError(400, "User not registered");
+    }
+
+    // compare password 
+    const compPassword = await bcrypt.compare(loginReq.password, findUser.password);
+
+    // check if password compare true or false
+    if(!compPassword) {
+        throw new CustomError(400, "Password is invalid");
+    }
+
+    // create jwt token
+    const genToken = jwt.sign(findUser, process.env.SECRET_KEY, { expiresIn: '3h' });
+
+    // return some response
+    return { 
+        msg: "Login success",
+        username: findUser.username,
+        email: findUser.email,
+        token: genToken
+    }
+}
+
 export default {
-    signup
+    signup,
+    login
 }
