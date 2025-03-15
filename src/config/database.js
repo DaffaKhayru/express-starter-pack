@@ -1,5 +1,5 @@
-import {} from '@prisma/client';
-import {logger} from 'winston';
+import {PrismaClient} from '@prisma/client';
+import {logger} from '../config/logger.js';
 
 export const prismaClient = new PrismaClient({
     log: [

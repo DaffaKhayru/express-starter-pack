@@ -1,7 +1,7 @@
-import { authValidation } from "../validations/auth-validation";
-import { validate } from "../validations/validate";
+import { authValidation } from "../validations/auth-validation.js";
+import { validate } from "../validations/validate.js";
 import {prismaClient} from '../config/database.js';
-import { CustomError } from "../util/custom-error";
+import { CustomError } from "../util/custom-error.js";
 import bcrypt from 'bcrypt';
 
 const signup = async (reqBody) => {
