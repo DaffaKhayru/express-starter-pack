@@ -16,7 +16,7 @@ const signup = async (reqBody) => {
         where: {
             email: signupReq.email
         }
-    })
+    });
 
     // check if user exist or not
     if(findUser) {
@@ -71,7 +71,12 @@ const login = async (reqBody) => {
     }
 }
 
+const signout = async (reqBody) => {
+
+}
+
 export default {
     signup,
-    login
+    login,
+    signout
 }

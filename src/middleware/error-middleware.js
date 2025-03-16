@@ -9,10 +9,10 @@ export const errorMiddleware = async (err,req,res,next) => {
     if(err instanceof CustomError) {
         res.status(err.status).json({
             error: err.message,
-        }).end();
+        })
     }else {
         res.status(500).json({
             error: err,
-        }).end();
+        })
     }
 }
