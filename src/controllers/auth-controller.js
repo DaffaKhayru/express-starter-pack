@@ -1,4 +1,3 @@
-import { logger } from "../config/logger.js";
 import authService from "../services/auth-service.js";
 
 const signup = async (req,res,next) => {

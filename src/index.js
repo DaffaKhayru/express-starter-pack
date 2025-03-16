@@ -11,6 +11,8 @@ app.use(authRoute.router);
 
 app.use(errorMiddleware);
 
-app.listen(3000, () => {
-    logger.info("Server running at port http://localhost:3000")
-});
+// app.listen(3000, () => {
+//     logger.info("Server running at port http://localhost:3000")
+// });
+
+export default app;
